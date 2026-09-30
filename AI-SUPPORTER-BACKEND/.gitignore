@@ -1,0 +1,32 @@
+# Build
+bin/
+obj/
+
+# Логи и рантайм-данные
+*.log
+cfg_out.json
+ip_registry.json
+traffic_patterns.json
+dev_config.json
+dev_chat_history.json
+chat_admin_conv_*.json
+chat_index_*.json
+
+# Секреты и окружение
+.env
+*.env
+jwt_key.txt
+users.json
+llm.json
+
+# Рантайм-данные (БД, история чатов)
+*.db
+*.db-shm
+*.db-wal
+chat_history_*.json
+
+# IDE
+.idea/
+.vs/
+.vscode/
+*.user

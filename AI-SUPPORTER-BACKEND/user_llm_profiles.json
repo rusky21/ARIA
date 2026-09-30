@@ -1,0 +1,30 @@
+[
+  {
+    "username": "admin",
+    "chat": {
+      "provider": "api",
+      "model": "gpt-4o-mini",
+      "autoSelect": false
+    },
+    "voice": {
+      "provider": "api",
+      "model": "gpt-4o-mini",
+      "autoSelect": false
+    },
+    "vision": {
+      "provider": "api",
+      "model": "",
+      "autoSelect": true
+    },
+    "toolCalling": {
+      "provider": "api",
+      "model": "gpt-4o-mini",
+      "autoSelect": false
+    },
+    "speech": {
+      "provider": "local",
+      "model": "large-v3",
+      "lang": "ru"
+    }
+  }
+]

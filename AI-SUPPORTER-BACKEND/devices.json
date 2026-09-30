@@ -1,0 +1,437 @@
+{
+  "ScanTime": "2026-09-25T18:48:45.4895434Z",
+  "Devices": [
+    {
+      "Ip": "192.168.101.189",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "https",
+        "rtsp"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-04T17:08:17.5781511Z",
+      "Mac": null,
+      "Vendor": null,
+      "ResponseMs": 7571,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.182",
+      "Name": "",
+      "Type": 0,
+      "Online": false,
+      "Services": [
+        "http",
+        "https"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T11:32:47.2786451Z",
+      "Mac": "F8:0D:60:E8:1C:C1",
+      "Vendor": null,
+      "ResponseMs": 9150,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.127",
+      "Name": "",
+      "Type": 0,
+      "Online": false,
+      "Services": [
+        "http-alt2"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T11:32:47.2804753Z",
+      "Mac": "44:45:6F:11:AC:68",
+      "Vendor": null,
+      "ResponseMs": 10571,
+      "Notes": null
+    },
+    {
+      "Ip": "169.254.47.92",
+      "Name": "AXIS M1054",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T12:41:40.2986214Z",
+      "Mac": "00:40:8C:D8:69:5A",
+      "Vendor": "AXIS",
+      "ResponseMs": 9059,
+      "Notes": "UPnP: AXIS AXIS M1054"
+    },
+    {
+      "Ip": "192.168.101.10",
+      "Name": "",
+      "Type": 0,
+      "Online": false,
+      "Services": [
+        "http",
+        "http-alt"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.2892628Z",
+      "Mac": "70:54:D2:8A:EE:9A",
+      "Vendor": null,
+      "ResponseMs": 1516,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.30",
+      "Name": "DS-N316(D)",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp",
+        "rtsp-alt"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.2924545Z",
+      "Mac": "3C:1B:F8:10:FD:D3",
+      "Vendor": "hikvision",
+      "ResponseMs": 1513,
+      "Notes": "UPnP: hikvision DS-N316(D)"
+    },
+    {
+      "Ip": "192.168.101.39",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp",
+        "rtsp-alt"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.2991747Z",
+      "Mac": "A0:FF:0C:EC:FC:F2",
+      "Vendor": null,
+      "ResponseMs": 1511,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.37",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp",
+        "rtsp-alt"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3058011Z",
+      "Mac": "A0:FF:0C:F3:2C:93",
+      "Vendor": null,
+      "ResponseMs": 1518,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.41",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp",
+        "rtsp-alt"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3086503Z",
+      "Mac": "80:BE:AF:CE:8B:4E",
+      "Vendor": null,
+      "ResponseMs": 1520,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.42",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp",
+        "rtsp-alt"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3071138Z",
+      "Mac": "80:BE:AF:CE:8B:52",
+      "Vendor": null,
+      "ResponseMs": 1522,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.36",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp",
+        "rtsp-alt"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3030477Z",
+      "Mac": "A0:FF:0C:F3:2C:8E",
+      "Vendor": null,
+      "ResponseMs": 1520,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.35",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3004026Z",
+      "Mac": "3C:DA:6E:82:31:84",
+      "Vendor": null,
+      "ResponseMs": 1511,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.34",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.293996Z",
+      "Mac": "3C:DA:6E:82:34:C4",
+      "Vendor": null,
+      "ResponseMs": 1514,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.31",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.2960622Z",
+      "Mac": "3C:DA:6E:82:34:C5",
+      "Vendor": null,
+      "ResponseMs": 1511,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.40",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3017876Z",
+      "Mac": "3C:DA:6E:82:31:83",
+      "Vendor": null,
+      "ResponseMs": 1521,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.33",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.297803Z",
+      "Mac": "3C:DA:6E:82:31:86",
+      "Vendor": null,
+      "ResponseMs": 1510,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.32",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3101031Z",
+      "Mac": "3C:DA:6E:83:1F:2D",
+      "Vendor": null,
+      "ResponseMs": 1520,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.38",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3045737Z",
+      "Mac": "3C:DA:6E:83:27:02",
+      "Vendor": null,
+      "ResponseMs": 1522,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.152",
+      "Name": "",
+      "Type": 0,
+      "Online": false,
+      "Services": [
+        "http"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3128863Z",
+      "Mac": "78:DA:6E:52:4F:15",
+      "Vendor": null,
+      "ResponseMs": 1518,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.200",
+      "Name": "",
+      "Type": 0,
+      "Online": false,
+      "Services": [
+        "http"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3219809Z",
+      "Mac": "24:E9:B3:6D:7E:6D",
+      "Vendor": null,
+      "ResponseMs": 1514,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.183",
+      "Name": "",
+      "Type": 0,
+      "Online": false,
+      "Services": [
+        "http"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3202978Z",
+      "Mac": "78:DA:6E:8D:EE:CB",
+      "Vendor": null,
+      "ResponseMs": 1515,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.153",
+      "Name": "",
+      "Type": 0,
+      "Online": false,
+      "Services": [
+        "http"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3143802Z",
+      "Mac": "78:DA:6E:0F:83:3B",
+      "Vendor": null,
+      "ResponseMs": 1514,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.160",
+      "Name": "",
+      "Type": 0,
+      "Online": false,
+      "Services": [
+        "http"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3181582Z",
+      "Mac": "78:DA:6E:8D:EE:6D",
+      "Vendor": null,
+      "ResponseMs": 1513,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.198",
+      "Name": "",
+      "Type": 0,
+      "Online": false,
+      "Services": [
+        "http-alt"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.3266307Z",
+      "Mac": "38:CA:73:92:2D:3C",
+      "Vendor": null,
+      "ResponseMs": 1509,
+      "Notes": null
+    },
+    {
+      "Ip": "192.168.101.3",
+      "Name": "",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp",
+        "rtsp-alt"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:11.28238Z",
+      "Mac": "00:12:31:BF:07:28",
+      "Vendor": null,
+      "ResponseMs": 1508,
+      "Notes": null
+    },
+    {
+      "Ip": "169.254.28.217",
+      "Name": "AXIS M1054",
+      "Type": 1,
+      "Online": false,
+      "Services": [
+        "http",
+        "rtsp"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-20T15:02:32.7883579Z",
+      "Mac": "00:40:8C:D8:69:5A",
+      "Vendor": "AXIS",
+      "ResponseMs": 1504,
+      "Notes": "UPnP: AXIS AXIS M1054"
+    },
+    {
+      "Ip": "192.168.1.1",
+      "Name": "",
+      "Type": 0,
+      "Online": true,
+      "Services": [
+        "http"
+      ],
+      "MjpegUrl": null,
+      "LastSeen": "2026-09-25T18:48:43.7846949Z",
+      "Mac": "58:F8:5C:71:17:D0",
+      "Vendor": null,
+      "ResponseMs": 1510,
+      "Notes": null
+    }
+  ]
+}

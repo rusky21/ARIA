@@ -1,0 +1,12 @@
+# Build
+node_modules/
+dist/
+
+# Локальное окружение (адрес бэкенда)
+.env
+.env.local
+*.env.local
+
+# IDE
+.idea/
+.vscode/

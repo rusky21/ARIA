@@ -1,0 +1,76 @@
+# Git backups
+*.git.bak
+.git.bak
+**/.git.bak
+
+# Node / Frontend Build
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+.vite/
+**/.vite/
+
+# .NET / Backend Build
+bin/
+**/bin/
+obj/
+**/obj/
+
+# Logs & runtime caches
+*.log
+**/*.log
+cfg_out.json
+**/cfg_out.json
+ip_registry.json
+**/ip_registry.json
+traffic_patterns.json
+**/traffic_patterns.json
+dev_config.json
+**/dev_config.json
+dev_chat_history.json
+**/dev_chat_history.json
+chat_admin_conv_*.json
+**/chat_admin_conv_*.json
+chat_index_*.json
+**/chat_index_*.json
+chat_history_*.json
+**/chat_history_*.json
+
+# Secrets, keys, credentials
+.env
+.env.*
+*.env
+*.env.local
+**/.env
+**/.env.*
+**/*.env
+**/*.env.local
+jwt_key.txt
+**/jwt_key.txt
+users.json
+**/users.json
+llm.json
+**/llm.json
+
+# Databases & large binaries
+*.db
+*.db-shm
+*.db-wal
+**/*.db
+**/*.db-shm
+**/*.db-wal
+traffic.db
+**/traffic.db
+
+# IDEs & OS files
+.idea/
+**/.idea/
+.vs/
+**/.vs/
+.vscode/
+**/.vscode/
+*.user
+**/*.user
+Thumbs.db
+Desktop.ini
