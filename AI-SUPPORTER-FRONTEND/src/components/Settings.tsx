@@ -1028,22 +1028,71 @@ function Field({ label, hint, value, onChange, password, disabled }: { label: st
   );
 }
 
-const panel: React.CSSProperties = { background: C.panel, border: `1px solid ${C.line}`, borderRadius: R.xl, padding: 22 };
-const panelHead: React.CSSProperties = { fontSize: 15, fontWeight: 600, color: C.textHi, marginBottom: 14, display: 'flex', alignItems: 'center', gap: 10 };
-const row: React.CSSProperties = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0' };
+const panel: React.CSSProperties = {
+  background: 'rgba(10, 15, 24, 0.72)',
+  border: '1px solid rgba(255,255,255,0.07)',
+  borderRadius: 18,
+  padding: 24,
+  backdropFilter: 'blur(20px)',
+  WebkitBackdropFilter: 'blur(20px)',
+  boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+};
+const panelHead: React.CSSProperties = {
+  fontFamily: "'Syne', sans-serif",
+  fontSize: 16,
+  fontWeight: 700,
+  letterSpacing: '-0.01em',
+  color: '#f8fafc',
+  marginBottom: 14,
+  display: 'flex',
+  alignItems: 'center',
+  gap: 10,
+};
+const row: React.CSSProperties = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  padding: '12px 0',
+};
 const input: React.CSSProperties = {
-  width: '100%', padding: '10px 12px', borderRadius: R.m, outline: 'none',
-  background: C.inputBg, border: `1px solid ${C.line}`,
-  color: C.tableText, fontFamily: C.mono, fontSize: 13,
+  width: '100%',
+  padding: '10px 14px',
+  borderRadius: 10,
+  outline: 'none',
+  background: 'rgba(255,255,255,0.03)',
+  border: '1px solid rgba(255,255,255,0.09)',
+  color: '#f8fafc',
+  fontFamily: C.mono,
+  fontSize: 12.5,
+  transition: 'border-color .18s',
 };
 const btn: React.CSSProperties = {
-  padding: '7px 16px', borderRadius: R.m, cursor: 'pointer',
-  fontFamily: C.mono, fontSize: 12, letterSpacing: '.04em',
-  background: cyanA(0.1), border: `1px solid ${cyanA(0.4)}`, color: C.cyan,
+  padding: '7px 16px',
+  borderRadius: 8,
+  cursor: 'pointer',
+  fontFamily: C.mono,
+  fontSize: 11.5,
+  letterSpacing: '.06em',
+  fontWeight: 600,
+  background: 'rgba(56,189,248,0.12)',
+  border: '1px solid rgba(56,189,248,0.35)',
+  color: '#38bdf8',
+  transition: 'all .18s',
 };
 const roleBtn: React.CSSProperties = {
-  padding: '7px 10px', borderRadius: R.s, cursor: 'pointer',
-  fontFamily: C.mono, fontSize: 10, letterSpacing: '.06em',
-  background: 'transparent', border: `1px solid ${w(0.12)}`,
+  padding: '6px 12px',
+  borderRadius: 8,
+  cursor: 'pointer',
+  fontFamily: C.mono,
+  fontSize: 10.5,
+  fontWeight: 600,
+  letterSpacing: '.08em',
+  background: 'rgba(255,255,255,0.03)',
+  border: '1px solid rgba(255,255,255,0.08)',
+  transition: 'all .18s',
 };
-const roleBtnActive: React.CSSProperties = { background: w(0.08), borderColor: w(0.3) };
+const roleBtnActive: React.CSSProperties = {
+  background: 'rgba(255,255,255,0.12)',
+  borderColor: 'rgba(255,255,255,0.3)',
+  boxShadow: '0 2px 10px rgba(0,0,0,0.3)',
+};

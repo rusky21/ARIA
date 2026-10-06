@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, Component, type ReactNode } from 'react'
+﻿import { useState, useEffect, useRef, useCallback, Component, type ReactNode } from 'react'
 import { WS_URL } from './lib/config.js'
 import { getSession, saveSession, clearSession, type Session } from './lib/auth.js'
 import { useAssistant } from './hooks/useAssistant.js'
@@ -120,9 +120,9 @@ function App() {
   const Screen = SCREENS[screen]
 
   return (
-    <div style={{ position: 'fixed', inset: 0, background: '#05080f', fontFamily: "'Chakra Petch', sans-serif", color: '#e8edf5', overflow: 'hidden' }}>
+    <div style={{ position: 'fixed', inset: 0, background: '#06080d', fontFamily: "'Plus Jakarta Sans', 'Chakra Petch', sans-serif", color: '#f2f5fa', overflow: 'hidden' }}>
       <canvas ref={canvasRef} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none' }} />
-      <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none', background: 'radial-gradient(120% 90% at 50% 30%, rgba(255,107,91,.05), transparent 55%), linear-gradient(180deg, rgba(5,8,15,.2), rgba(5,8,15,.65))' }} />
+      <div style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none', background: 'radial-gradient(120% 90% at 50% 30%, rgba(255,107,91,.05), transparent 55%), linear-gradient(180deg, rgba(6,8,13,.25), rgba(6,8,13,.75))' }} />
 
       {a.screen === 'home' && <Home a={a} />}
       {a.screen === 'voice' && <Voice a={a} />}

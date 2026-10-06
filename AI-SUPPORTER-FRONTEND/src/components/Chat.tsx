@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { useAssistant } from '../hooks/useAssistant.js';
 import { C } from '../lib/theme.js';
 import { UserMsg, AssistantMsg, ToolMsg, ThinkingRow, GptComposer, useStickToBottom } from './gpt.js';
@@ -8,10 +8,10 @@ import ContextMenu from './ContextMenu.js';
 import { Icon } from './Icon.jsx';
 
 const CHIPS = [
-  'Настрой Art-Net оборудование',
-  'Объясни протокол OSC',
-  'Проверь сетевое подключение',
-  'Покажи системные метрики',
+  '⚡ Настрой Art-Net оборудование',
+  '📡 Объясни протокол OSC',
+  '🔍 Проверь сетевое подключение',
+  '📊 Покажи системные метрики',
 ];
 
 export default function Chat({ a }: { a: ReturnType<typeof useAssistant> }) {
@@ -43,43 +43,128 @@ export default function Chat({ a }: { a: ReturnType<typeof useAssistant> }) {
         onDelete={a.deleteChat}
       />
 
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, position: 'relative' }}>
+        {/* Subtle Chat Sub-Header */}
         <div style={{
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          padding: '14px 30px',
-          borderBottom: '1px solid rgba(255,255,255,.06)',
-          background: 'rgba(7,11,18,.4)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '12px 28px',
+          borderBottom: '1px solid rgba(255,255,255,.05)',
+          background: 'rgba(6, 8, 13, 0.4)',
+          backdropFilter: 'blur(10px)',
         }}>
-          <span style={{
-            fontFamily: C.mono, fontSize: 12, color: C.textMid,
-            letterSpacing: '.1em',
-          }}>ARIA · AI-АССИСТЕНТ</span>
-          <button onClick={() => a.createChat()} style={clearBtn} title="Начать новый чат">＋ Новый чат</button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+            <span style={{
+              width: 6,
+              height: 6,
+              borderRadius: '50%',
+              background: '#38bdf8',
+              boxShadow: '0 0 8px #38bdf8',
+            }} />
+            <span style={{
+              fontFamily: C.mono,
+              fontSize: 11,
+              color: 'rgba(255,255,255,0.6)',
+              letterSpacing: '.12em',
+              fontWeight: 600,
+            }}>
+              ARIA · НЕЙРОСЕТЕВОЙ ДИАЛОГ
+            </span>
+          </div>
+
+          <button
+            onClick={() => a.createChat()}
+            style={clearBtn}
+            title="Начать новый диалог"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.08)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.18)';
+              e.currentTarget.style.color = '#fff';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+              e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+              e.currentTarget.style.color = '#94a3b8';
+            }}
+          >
+            + Новый диалог
+          </button>
         </div>
 
-        <div ref={ref} style={{ flex: 1, overflowY: 'auto', padding: '20px 0 10px' }}>
-          <div style={{ maxWidth: 'min(820px, 94vw)', margin: '0 auto', padding: '0 24px', display: 'flex', flexDirection: 'column', gap: 26 }}>
+        {/* Message Stream */}
+        <div ref={ref} style={{ flex: 1, overflowY: 'auto', padding: '24px 0 12px' }}>
+          <div style={{ maxWidth: 'min(860px, 94vw)', margin: '0 auto', padding: '0 24px', display: 'flex', flexDirection: 'column', gap: 24 }}>
             {a.messages.length === 0 && !a.thinking && !a.chatThinking && (
-              <div style={{ textAlign: 'center', marginTop: '16vh' }}>
-                <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: '.02em', color: C.textHi }}>Чем я могу помочь?</div>
-                <div style={{ marginTop: 12, fontFamily: C.mono, fontSize: 12, color: C.textDim, letterSpacing: '.1em' }}>
-                  ARIA · ГОТОВА К РАБОТЕ
+              <div style={{ textAlign: 'center', marginTop: '14vh' }}>
+                <div style={{
+                  fontFamily: "'Syne', sans-serif",
+                  fontSize: 'clamp(28px, 4vw, 42px)',
+                  fontWeight: 800,
+                  letterSpacing: '-0.02em',
+                  color: '#f8fafc',
+                  background: 'linear-gradient(180deg, #ffffff 40%, rgba(255,255,255,0.6) 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}>
+                  Чем я могу помочь?
                 </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 8, marginTop: 24, maxWidth: 600, margin: '24px auto 0' }}>
+
+                <div style={{
+                  marginTop: 10,
+                  fontFamily: C.mono,
+                  fontSize: 12,
+                  color: 'rgba(126,139,160,0.85)',
+                  letterSpacing: '.14em',
+                }}>
+                  ARIA · ИНТЕЛЛЕКТУАЛЬНЫЙ АГЕНТ ГОТОВ К РАБОТЕ
+                </div>
+
+                {/* Prompt Suggestion Chips */}
+                <div style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                  gap: 10,
+                  marginTop: 28,
+                  maxWidth: 640,
+                  margin: '28px auto 0',
+                }}>
                   {CHIPS.map((chip) => (
                     <button
                       key={chip}
                       onClick={() => a.sendMsg(chip)}
                       style={{
-                        padding: '9px 16px', borderRadius: 18,
-                        border: '1px solid rgba(255,255,255,.1)',
-                        background: 'rgba(255,255,255,.04)',
-                        color: C.textMid, fontFamily: C.ui, fontSize: 13,
-                        cursor: 'pointer', whiteSpace: 'nowrap',
+                        padding: '10px 18px',
+                        borderRadius: 999,
+                        border: '1px solid rgba(255,255,255,0.09)',
+                        background: 'rgba(255,255,255,0.03)',
+                        color: '#cbd5e1',
+                        fontFamily: "'Plus Jakarta Sans', sans-serif",
+                        fontSize: 13,
+                        fontWeight: 500,
+                        cursor: 'pointer',
+                        whiteSpace: 'nowrap',
+                        boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+                        transition: 'all .2s cubic-bezier(.4,0,.2,1)',
                       }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,107,91,.1)'; e.currentTarget.style.borderColor = 'rgba(255,107,91,.3)'; e.currentTarget.style.color = C.textHi; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,.04)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,.1)'; e.currentTarget.style.color = C.textMid; }}
-                    >{chip}</button>
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255,107,91,0.12)';
+                        e.currentTarget.style.borderColor = 'rgba(255,107,91,0.35)';
+                        e.currentTarget.style.color = '#fff';
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                        e.currentTarget.style.boxShadow = '0 6px 20px rgba(255,107,91,0.15)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.03)';
+                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)';
+                        e.currentTarget.style.color = '#cbd5e1';
+                        e.currentTarget.style.transform = 'none';
+                        e.currentTarget.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+                      }}
+                    >
+                      {chip}
+                    </button>
                   ))}
                 </div>
               </div>
@@ -89,7 +174,7 @@ export default function Chat({ a }: { a: ReturnType<typeof useAssistant> }) {
               if (m.role === 'user') {
                 if (a.editingIndex === i) {
                   return (
-                    <div key={i} style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <div key={i} style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                       <textarea
                         ref={editRef}
                         defaultValue={m.text || ''}
@@ -101,10 +186,20 @@ export default function Chat({ a }: { a: ReturnType<typeof useAssistant> }) {
                           if (e.key === 'Escape') a.setEditingIndex(null);
                         }}
                         style={{
-                          maxWidth: '78%', background: 'rgba(255,107,91,.08)', borderRadius: 20,
-                          padding: '11px 17px', fontSize: 15, lineHeight: 1.55, color: C.textHi,
-                          border: `1px solid ${C.accentLine}`, outline: 'none', resize: 'none',
-                          fontFamily: C.ui, whiteSpace: 'pre-wrap', wordBreak: 'break-word',
+                          maxWidth: '82%',
+                          background: 'rgba(255,107,91,0.12)',
+                          borderRadius: 20,
+                          padding: '12px 18px',
+                          fontSize: 14.5,
+                          lineHeight: 1.55,
+                          color: '#fff',
+                          border: '1px solid rgba(255,107,91,0.4)',
+                          outline: 'none',
+                          resize: 'none',
+                          fontFamily: "'Plus Jakarta Sans', sans-serif",
+                          whiteSpace: 'pre-wrap',
+                          wordBreak: 'break-word',
+                          boxShadow: '0 0 20px rgba(255,107,91,0.2)',
                         }}
                       />
                     </div>
@@ -123,24 +218,36 @@ export default function Chat({ a }: { a: ReturnType<typeof useAssistant> }) {
                 <div key={i} onContextMenu={(e) => handleContextMenu(e, i, 'assistant', m.text || '')}>
                   <AssistantMsg text={m.text} onLink={openLink} />
                   {i > 0 && m.text && (
-                    <div style={{ display: 'flex', gap: 6, paddingLeft: 44, marginTop: 6 }}>
+                    <div style={{ display: 'flex', gap: 8, paddingLeft: 46, marginTop: 8 }}>
                       <button
                         onClick={() => a.likeMessage(i)}
-                        title="Нравится"
+                        title="Полезно"
                         style={actBtn}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(57,217,138,.12)'; e.currentTarget.style.color = C.green; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = a.likedMessages.has(i) ? C.green : C.textDim; }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'rgba(57,217,138,0.15)';
+                          e.currentTarget.style.color = '#39d98a';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'transparent';
+                          e.currentTarget.style.color = a.likedMessages.has(i) ? '#39d98a' : 'rgba(255,255,255,0.3)';
+                        }}
                       >
-                        <Icon name="like" size={14} width={1.8} color={a.likedMessages.has(i) ? C.green : C.textDim} />
+                        <Icon name="like" size={14} width={1.8} color={a.likedMessages.has(i) ? '#39d98a' : 'rgba(255,255,255,0.35)'} />
                       </button>
                       <button
                         onClick={() => a.dislikeMessage(i)}
-                        title="Не нравится"
+                        title="Не полезно"
                         style={actBtn}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,84,112,.12)'; e.currentTarget.style.color = C.red; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = a.dislikedMessages.has(i) ? C.red : C.textDim; }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'rgba(255,84,112,0.15)';
+                          e.currentTarget.style.color = '#ff5470';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'transparent';
+                          e.currentTarget.style.color = a.dislikedMessages.has(i) ? '#ff5470' : 'rgba(255,255,255,0.3)';
+                        }}
                       >
-                        <Icon name="dislike" size={14} width={1.8} color={a.dislikedMessages.has(i) ? C.red : C.textDim} />
+                        <Icon name="dislike" size={14} width={1.8} color={a.dislikedMessages.has(i) ? '#ff5470' : 'rgba(255,255,255,0.35)'} />
                       </button>
                     </div>
                   )}
@@ -149,29 +256,42 @@ export default function Chat({ a }: { a: ReturnType<typeof useAssistant> }) {
             })}
 
             {(a.thinking || a.chatThinking) && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                 <ThinkingRow />
                 {a.chatThinkingText && (
-                  <span style={{ fontFamily: C.mono, fontSize: 12, color: C.textDim, paddingLeft: 44 }}>{a.chatThinkingText}</span>
+                  <span style={{ fontFamily: C.mono, fontSize: 12, color: 'rgba(126,139,160,0.85)', paddingLeft: 46 }}>
+                    {a.chatThinkingText}
+                  </span>
                 )}
                 {a.chatReasoning && (
                   <div style={{
-                    marginLeft: 44, fontFamily: C.mono, fontSize: 11.5, lineHeight: 1.6,
-                    color: '#9fb0c3', whiteSpace: 'pre-wrap', maxHeight: 200, overflowY: 'auto',
-                    background: 'rgba(8,14,22,.55)', border: '1px solid rgba(255,255,255,.06)',
-                    borderRadius: 10, padding: '10px 14px',
-                  }}>{a.chatReasoning}</div>
+                    marginLeft: 46,
+                    fontFamily: C.mono,
+                    fontSize: 11.5,
+                    lineHeight: 1.6,
+                    color: '#94a3b8',
+                    whiteSpace: 'pre-wrap',
+                    maxHeight: 220,
+                    overflowY: 'auto',
+                    background: 'rgba(6,9,15,0.7)',
+                    border: '1px solid rgba(255,255,255,0.06)',
+                    borderRadius: 12,
+                    padding: '12px 16px',
+                  }}>
+                    {a.chatReasoning}
+                  </div>
                 )}
               </div>
             )}
           </div>
         </div>
 
+        {/* Composer */}
         <GptComposer
           value={a.input}
           onChange={a.setInput}
           onSend={a.sendMsg}
-          placeholder="Спросите ARIA или дайте команду…"
+          placeholder="Спросите ARIA или дайте команду для выполнения…"
           onMic={a.enterVoice}
           image={a.chatImage}
           onImageChange={a.setChatImage}
@@ -201,13 +321,27 @@ export default function Chat({ a }: { a: ReturnType<typeof useAssistant> }) {
 }
 
 const clearBtn: React.CSSProperties = {
-  padding: '6px 14px', borderRadius: 18, border: '1px solid rgba(255,255,255,.09)',
-  background: 'rgba(255,255,255,.04)', color: '#9fb0c4', cursor: 'pointer',
-  fontFamily: "'Chakra Petch', sans-serif", fontSize: 12,
+  padding: '6px 14px',
+  borderRadius: 999,
+  border: '1px solid rgba(255,255,255,.08)',
+  background: 'rgba(255,255,255,.03)',
+  color: '#94a3b8',
+  cursor: 'pointer',
+  fontFamily: "'Plus Jakarta Sans', sans-serif",
+  fontSize: 12,
+  fontWeight: 600,
+  transition: 'all .18s',
 };
+
 const actBtn: React.CSSProperties = {
-  width: 30, height: 30, borderRadius: 9, border: '1px solid transparent',
-  background: 'transparent', cursor: 'pointer', display: 'flex',
-  alignItems: 'center', justifyContent: 'center',
-  transition: 'background .18s, color .18s',
+  width: 28,
+  height: 28,
+  borderRadius: 8,
+  border: '1px solid transparent',
+  background: 'transparent',
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transition: 'all .18s',
 };

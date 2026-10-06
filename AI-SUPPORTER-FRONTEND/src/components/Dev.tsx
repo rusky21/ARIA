@@ -256,47 +256,53 @@ function HunkView({ hunk }: { hunk: DevHunk }) {
 }
 
 const inputStyle: React.CSSProperties = {
-  width: '100%', boxSizing: 'border-box', padding: '13px 15px', borderRadius: 12,
-  background: C.panelAlt, border: `1px solid ${w(0.1)}`, outline: 'none',
-  color: C.textHi, fontFamily: C.mono, fontSize: 14,
+  width: '100%', boxSizing: 'border-box', padding: '12px 16px', borderRadius: 10,
+  background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', outline: 'none',
+  color: '#f8fafc', fontFamily: C.mono, fontSize: 13,
 };
 const accentBtn: React.CSSProperties = {
-  width: '100%', marginTop: 16, padding: '13px 0', borderRadius: 12, border: 'none',
-  background: C.accent, color: C.onAccent, fontFamily: C.ui, fontSize: 14, fontWeight: 600,
-  cursor: 'pointer', letterSpacing: '.04em', transition: 'filter .15s',
+  width: '100%', marginTop: 16, padding: '12px 0', borderRadius: 10, border: 'none',
+  background: 'linear-gradient(135deg, #ff6b5b 0%, #ff8b7b 100%)', color: '#ffffff',
+  fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13.5, fontWeight: 700,
+  cursor: 'pointer', letterSpacing: '.04em', boxShadow: '0 4px 16px rgba(255,107,91,0.35)',
+  transition: 'all .18s',
 };
 const ghostBtn: React.CSSProperties = {
-  marginTop: 16, padding: '13px 18px', borderRadius: 12, border: `1px solid ${w(0.12)}`,
-  background: 'transparent', color: C.textMid, fontFamily: C.ui, fontSize: 14, cursor: 'pointer',
+  marginTop: 16, padding: '11px 18px', borderRadius: 10, border: '1px solid rgba(255,255,255,0.1)',
+  background: 'rgba(255,255,255,0.03)', color: '#cbd5e1', fontFamily: "'Plus Jakarta Sans', sans-serif",
+  fontSize: 13, cursor: 'pointer', transition: 'all .18s',
 };
 const devBar: React.CSSProperties = {
-  display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 26px',
-  borderBottom: `1px solid ${w(0.06)}`, background: C.bgCrust,
+  display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 24px',
+  borderBottom: '1px solid rgba(255,255,255,0.06)', background: 'rgba(6, 8, 13, 0.55)',
+  backdropFilter: 'blur(16px)',
 };
 const smallBtn: React.CSSProperties = {
-  display: 'flex', alignItems: 'center', gap: 6, padding: '7px 12px', borderRadius: 9,
-  border: `1px solid ${w(0.1)}`, background: w(0.04), color: C.tableDim,
-  fontFamily: C.mono, fontSize: 11, cursor: 'pointer',
+  display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 8,
+  border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.03)', color: '#94a3b8',
+  fontFamily: C.mono, fontSize: 11, cursor: 'pointer', transition: 'all .18s',
 };
 const selStyle: React.CSSProperties = {
-  background: C.panelAlt, border: `1px solid ${w(0.1)}`, borderRadius: 8,
-  color: C.textMid, fontFamily: C.mono, fontSize: 11, padding: '6px 8px', outline: 'none', cursor: 'pointer',
+  background: 'rgba(10, 15, 24, 0.9)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 8,
+  color: '#cbd5e1', fontFamily: C.mono, fontSize: 11, padding: '6px 10px', outline: 'none', cursor: 'pointer',
 };
 const applyBtn: React.CSSProperties = {
-  width: '100%', padding: '12px 0', borderRadius: 12, border: 'none', background: C.green,
-  color: '#06130b', fontFamily: C.ui, fontSize: 14, fontWeight: 600, cursor: 'pointer',
-  letterSpacing: '.04em', transition: 'filter .15s',
+  width: '100%', padding: '12px 0', borderRadius: 10, border: 'none',
+  background: 'linear-gradient(135deg, #39d98a 0%, #4ae396 100%)', color: '#06130b',
+  fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13.5, fontWeight: 700, cursor: 'pointer',
+  letterSpacing: '.04em', boxShadow: '0 4px 16px rgba(57,217,138,0.3)', transition: 'all .18s',
 };
 const rejectBtn: React.CSSProperties = {
-  width: '100%', marginTop: 8, padding: '10px 0', borderRadius: 12,
-  border: `1px solid ${w(0.12)}`, background: 'transparent', color: C.textMid,
-  fontFamily: C.ui, fontSize: 13, cursor: 'pointer',
+  width: '100%', marginTop: 8, padding: '10px 0', borderRadius: 10,
+  border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.03)', color: '#94a3b8',
+  fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer',
+  transition: 'all .18s',
 };
 const tabBtn = (active: boolean): React.CSSProperties => ({
-  flex: 1, padding: '14px 0', border: 'none',
-  borderBottom: active ? `2px solid ${C.accent}` : '2px solid transparent',
-  background: 'transparent',
-  color: active ? C.textHi : C.textDim,
-  fontFamily: C.mono, fontSize: 11, letterSpacing: '.1em',
-  cursor: 'pointer',
+  flex: 1, padding: '12px 0', border: 'none',
+  borderBottom: active ? '2px solid #ff6b5b' : '2px solid transparent',
+  background: active ? 'rgba(255,107,91,0.08)' : 'transparent',
+  color: active ? '#ff8a7a' : 'rgba(255,255,255,0.45)',
+  fontFamily: C.mono, fontSize: 11, fontWeight: active ? 700 : 500, letterSpacing: '.08em',
+  cursor: 'pointer', transition: 'all .15s',
 });

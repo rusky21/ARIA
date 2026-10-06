@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type RefObject } from 'react';
+﻿import { useEffect, useRef, useState, type RefObject } from 'react';
 import { C, R, FS, w, cyanA } from '../lib/theme.js';
 import { renderMarkdown } from '../lib/markdown.js';
 import { Icon, MicIcon } from './Icon.jsx';
@@ -23,17 +23,40 @@ export function useStickToBottom(deps: unknown[]): { ref: RefObject<HTMLDivEleme
   return { ref };
 }
 
-export function GptAvatar({ size = 30, glow }: { size?: number; glow?: boolean }) {
+export function GptAvatar({ size = 32, glow }: { size?: number; glow?: boolean }) {
   return (
     <div style={{
-      width: size, height: size, flexShrink: 0, borderRadius: '50%', position: 'relative',
-      background: 'conic-gradient(from 210deg, #ff6b5b, #ff9d5b, #ff6b5b)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      boxShadow: glow ? '0 0 22px rgba(255,107,91,.55), 0 0 6px rgba(255,107,91,.4)' : '0 0 14px rgba(255,107,91,.3)',
-      transition: 'box-shadow .3s',
+      width: size,
+      height: size,
+      flexShrink: 0,
+      borderRadius: '50%',
+      position: 'relative',
+      background: 'conic-gradient(from 210deg, #ff6b5b, #ff9d5b, #38bdf8, #ff6b5b)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      boxShadow: glow
+        ? '0 0 24px rgba(255,107,91,0.6), 0 0 8px rgba(255,107,91,0.4)'
+        : '0 0 14px rgba(255,107,91,0.3)',
+      transition: 'box-shadow .3s, transform .2s',
     }}>
-      <div style={{ width: size - 10, height: size - 10, borderRadius: '50%', background: C.panelAlt, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ width: size / 4, height: size / 4, borderRadius: '50%', background: 'radial-gradient(circle at 40% 35%, #ffd9a8, #ff6b5b)' }} />
+      <div style={{
+        width: size - 8,
+        height: size - 8,
+        borderRadius: '50%',
+        background: '#090d15',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.15)',
+      }}>
+        <div style={{
+          width: Math.max(size / 3.5, 7),
+          height: Math.max(size / 3.5, 7),
+          borderRadius: '50%',
+          background: 'radial-gradient(circle at 40% 35%, #ffd9a8 0%, #ff6b5b 80%)',
+          boxShadow: '0 0 8px rgba(255,107,91,0.7)',
+        }} />
       </div>
     </div>
   );
@@ -41,9 +64,34 @@ export function GptAvatar({ size = 30, glow }: { size?: number; glow?: boolean }
 
 export function UserMsg({ text, image }: { text: string; image?: string }) {
   return (
-    <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-      <div style={userBubble}>
-        {image && <img src={image} alt="" style={{ display: 'block', maxWidth: 240, borderRadius: 10, marginBottom: text ? 8 : 0 }} />}
+    <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+      <div style={{
+        maxWidth: '82%',
+        background: 'linear-gradient(135deg, rgba(255,107,91,0.18) 0%, rgba(255,84,112,0.09) 100%)',
+        border: '1px solid rgba(255,107,91,0.28)',
+        borderRadius: '20px 20px 4px 20px',
+        padding: '12px 18px',
+        fontSize: '14.5px',
+        lineHeight: 1.6,
+        color: '#f8fafc',
+        boxShadow: '0 6px 24px rgba(0,0,0,0.25), 0 0 16px rgba(255,107,91,0.06)',
+        whiteSpace: 'pre-wrap',
+        wordBreak: 'break-word',
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+      }}>
+        {image && (
+          <img
+            src={image}
+            alt=""
+            style={{
+              display: 'block',
+              maxWidth: 260,
+              borderRadius: 12,
+              marginBottom: text ? 10 : 0,
+              border: '1px solid rgba(255,255,255,0.15)',
+            }}
+          />
+        )}
         {text}
       </div>
     </div>
@@ -52,12 +100,27 @@ export function UserMsg({ text, image }: { text: string; image?: string }) {
 
 export function AssistantMsg({ text, onLink, children }: { text?: string; onLink?: (url: string) => void; children?: React.ReactNode }) {
   return (
-    <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-      <GptAvatar />
-      <div style={{ flex: 1, minWidth: 0, paddingTop: 4 }}>
+    <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', width: '100%' }}>
+      <GptAvatar glow />
+      <div style={{
+        flex: 1,
+        minWidth: 0,
+        background: 'rgba(255,255,255,0.02)',
+        border: '1px solid rgba(255,255,255,0.05)',
+        borderRadius: 18,
+        padding: '14px 18px',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+      }}>
         {children}
         {text != null && (
-          <div style={{ color: C.tableText, fontSize: FS.xl, lineHeight: 1.65 }}>{renderMarkdown(text, onLink)}</div>
+          <div style={{
+            color: '#e2e8f0',
+            fontSize: '14.5px',
+            lineHeight: 1.65,
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}>
+            {renderMarkdown(text, onLink)}
+          </div>
         )}
       </div>
     </div>
@@ -67,22 +130,59 @@ export function AssistantMsg({ text, onLink, children }: { text?: string; onLink
 export function ToolMsg({ name, result, ms }: { name: string; result: string; ms: number }) {
   const [open, setOpen] = useState(false);
   return (
-    <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
-      <div style={{ width: 30, flexShrink: 0 }} />
-      <button onClick={() => setOpen((v) => !v)} style={{
-        display: 'flex', alignItems: 'center', gap: 9, padding: '7px 13px', borderRadius: R.s,
-        border: `1px solid ${cyanA(0.22)}`, background: cyanA(0.06), cursor: 'pointer',
-        color: C.cyan, fontFamily: C.mono, fontSize: FS.s, transition: 'all .18s',
-      }}
-        onMouseEnter={(e) => { e.currentTarget.style.background = cyanA(0.1); }}
-        onMouseLeave={(e) => { e.currentTarget.style.background = cyanA(0.06); }}>
+    <div style={{ display: 'flex', gap: 14, alignItems: 'flex-start', paddingLeft: 46 }}>
+      <button
+        onClick={() => setOpen((v) => !v)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 9,
+          padding: '7px 14px',
+          borderRadius: 10,
+          border: `1px solid ${cyanA(0.25)}`,
+          background: 'rgba(56,189,248,0.06)',
+          cursor: 'pointer',
+          color: C.cyan,
+          fontFamily: C.mono,
+          fontSize: FS.s,
+          transition: 'all .18s',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = 'rgba(56,189,248,0.12)';
+          e.currentTarget.style.borderColor = 'rgba(56,189,248,0.4)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'rgba(56,189,248,0.06)';
+          e.currentTarget.style.borderColor = cyanA(0.25);
+        }}
+      >
         <Icon name="tool" size={13} width={1.8} />
-        <span>{name}</span>
-        <span style={{ color: C.green }}>✓ {ms}ms</span>
-        <span style={{ color: C.textDim, transform: open ? 'rotate(90deg)' : 'none', transition: 'transform .15s' }}>▶</span>
+        <span style={{ fontWeight: 600 }}>{name}</span>
+        <span style={{ color: C.green, fontFamily: C.mono, fontSize: 11 }}>✓ {ms}ms</span>
+        <span style={{
+          color: C.textDim,
+          transform: open ? 'rotate(90deg)' : 'none',
+          transition: 'transform .18s',
+          fontSize: 10,
+        }}>▶</span>
       </button>
+
       {open && (
-        <div style={{ flex: 1, minWidth: 0, background: 'rgba(8,14,22,.7)', border: `1px solid ${C.line}`, borderRadius: R.m, padding: '10px 14px', fontFamily: C.mono, fontSize: FS.s, lineHeight: 1.6, color: C.tableDim, whiteSpace: 'pre-wrap' }}>
+        <div style={{
+          flex: 1,
+          minWidth: 0,
+          background: 'rgba(6,9,15,0.85)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: 12,
+          padding: '12px 16px',
+          fontFamily: C.mono,
+          fontSize: FS.s,
+          lineHeight: 1.6,
+          color: '#cbd5e1',
+          whiteSpace: 'pre-wrap',
+          boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+        }}>
           {result}
         </div>
       )}
@@ -93,16 +193,41 @@ export function ToolMsg({ name, result, ms }: { name: string; result: string; ms
 export function ThinkingRow({ label }: { label?: string }) {
   return (
     <div style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
-      <GptAvatar />
-      {label ? (
-        <span style={{ fontFamily: C.mono, fontSize: FS.s, color: C.textDim }}>{label}</span>
-      ) : (
-        <span style={{ display: 'inline-flex', gap: 5 }}>
-          {[0, 0.18, 0.36].map((d) => (
-            <span key={d} style={{ width: 8, height: 8, borderRadius: '50%', background: C.tableDim, animation: `ariaDot 1.2s infinite ${d}s` }} />
-          ))}
-        </span>
-      )}
+      <GptAvatar glow />
+      <div style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 8,
+        padding: '6px 14px',
+        borderRadius: 999,
+        background: 'rgba(255,107,91,0.08)',
+        border: '1px solid rgba(255,107,91,0.2)',
+      }}>
+        {label ? (
+          <span style={{ fontFamily: C.mono, fontSize: 11.5, color: '#f87171', letterSpacing: '.06em' }}>{label}</span>
+        ) : (
+          <>
+            <span style={{ fontFamily: C.mono, fontSize: 11, color: '#f87171', letterSpacing: '.08em', fontWeight: 600 }}>
+              ARIA АНАЛИЗИРУЕТ
+            </span>
+            <span style={{ display: 'inline-flex', gap: 4 }}>
+              {[0, 0.18, 0.36].map((d) => (
+                <span
+                  key={d}
+                  style={{
+                    width: 5,
+                    height: 5,
+                    borderRadius: '50%',
+                    background: '#ff6b5b',
+                    animation: `ariaDot 1.2s infinite ${d}s`,
+                    boxShadow: '0 0 6px #ff6b5b',
+                  }}
+                />
+              ))}
+            </span>
+          </>
+        )}
+      </div>
     </div>
   );
 }
@@ -136,27 +261,87 @@ export function GptComposer({
   };
 
   return (
-    <div style={{ padding: '10px 24px 22px' }}>
-      <div style={{ maxWidth: 'min(820px, 94vw)', margin: '0 auto', position: 'relative' }}>
+    <div style={{ padding: '12px 24px 24px', position: 'relative', zIndex: 10 }}>
+      <div style={{ maxWidth: 'min(860px, 94vw)', margin: '0 auto', position: 'relative' }}>
         {image && (
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: 10, marginBottom: 8, padding: 6, borderRadius: 14, background: 'rgba(20,27,41,.92)', border: `1px solid ${w(0.09)}` }}>
-            <img src={image} alt="" style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 10, display: 'block' }} />
-            <button onClick={() => onImageChange?.(null)} title="Удалить изображение" style={{ ...circleBtn, background: 'transparent', border: `1px solid ${w(0.12)}`, color: C.textMid }}>
-              <Icon name="close" size={14} />
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 12,
+            marginBottom: 10,
+            padding: '6px 12px 6px 6px',
+            borderRadius: 14,
+            background: 'rgba(15,22,34,0.95)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+          }}>
+            <img src={image} alt="" style={{ width: 56, height: 56, objectFit: 'cover', borderRadius: 10, display: 'block' }} />
+            <button
+              onClick={() => onImageChange?.(null)}
+              title="Удалить изображение"
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: '50%',
+                background: 'rgba(255,255,255,0.06)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: C.textMid,
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Icon name="close" size={13} />
             </button>
           </div>
         )}
+
+        {/* Floating Obsidian Capsule Composer */}
         <div style={{
-          display: 'flex', alignItems: 'flex-end', gap: 8,
-          background: 'rgba(20,27,41,.92)', border: `1px solid ${w(0.09)}`,
-          borderRadius: R.xxl, padding: '9px 10px 9px 16px',
-          boxShadow: '0 8px 32px rgba(0,0,0,.45)',
-          backdropFilter: 'blur(10px)', transition: 'border-color .2s',
+          display: 'flex',
+          alignItems: 'flex-end',
+          gap: 10,
+          background: 'rgba(10, 15, 24, 0.88)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          borderRadius: 24,
+          padding: '8px 10px 8px 16px',
+          boxShadow: '0 12px 42px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.1)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          transition: 'border-color .2s, box-shadow .2s',
         }}>
           <input ref={fileRef} type="file" accept="image/*" onChange={onFilePicked} style={{ display: 'none' }} />
-          <button onClick={() => fileRef.current?.click()} title="Прикрепить изображение" style={{ ...circleBtn, background: 'transparent', border: `1px solid ${w(0.12)}`, color: '#7e8ba0', marginBottom: 2 }}>
-            <span style={{ fontSize: 17, lineHeight: 1 }}>+</span>
+          <button
+            onClick={() => fileRef.current?.click()}
+            title="Прикрепить изображение"
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              color: '#94a3b8',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              marginBottom: 2,
+              transition: 'all .18s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.09)';
+              e.currentTarget.style.color = '#f1f5f9';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+              e.currentTarget.style.color = '#94a3b8';
+            }}
+          >
+            <span style={{ fontSize: 18, lineHeight: 1 }}>+</span>
           </button>
+
           <textarea
             ref={taRef}
             rows={1}
@@ -166,36 +351,97 @@ export function GptComposer({
             placeholder={placeholder}
             autoFocus
             style={{
-              flex: 1, background: 'transparent', border: 'none', outline: 'none', resize: 'none',
-              color: C.textHi, fontFamily: C.ui, fontSize: FS.xl, lineHeight: 1.5,
-              maxHeight: 200, paddingTop: 8, paddingBottom: 6,
+              flex: 1,
+              background: 'transparent',
+              border: 'none',
+              outline: 'none',
+              resize: 'none',
+              color: '#f8fafc',
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              fontSize: '14.5px',
+              lineHeight: 1.5,
+              maxHeight: 200,
+              paddingTop: 8,
+              paddingBottom: 6,
             }}
           />
+
           {onMic && (
-            <button onClick={onMic} title="Голосовой ввод" style={{ ...circleBtn, background: 'transparent', marginBottom: 2 }}>
-              <MicIcon color="#7e8ba0" size={19} />
+            <button
+              onClick={onMic}
+              title="Голосовой ввод"
+              style={{
+                width: 36,
+                height: 36,
+                borderRadius: '50%',
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                marginBottom: 2,
+                transition: 'all .18s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255,107,91,0.15)';
+                e.currentTarget.style.borderColor = 'rgba(255,107,91,0.3)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
+                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)';
+              }}
+            >
+              <MicIcon color="#94a3b8" size={18} />
             </button>
           )}
-          <button onClick={trySend} disabled={!canSend} title="Отправить"
-            style={{ ...circleBtn, opacity: canSend ? 1 : 0.45, cursor: canSend ? 'pointer' : 'default' }}>
-            <Icon name="send" color={C.onAccent} size={18} width={2} />
+
+          <button
+            onClick={trySend}
+            disabled={!canSend}
+            title="Отправить (Enter)"
+            style={{
+              width: 38,
+              height: 38,
+              borderRadius: '50%',
+              border: 'none',
+              flexShrink: 0,
+              background: canSend
+                ? 'linear-gradient(135deg, #ff6b5b 0%, #ff8b7b 100%)'
+                : 'rgba(255,255,255,0.08)',
+              color: canSend ? '#fff' : '#64748b',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: canSend ? 'pointer' : 'default',
+              boxShadow: canSend ? '0 4px 16px rgba(255,107,91,0.45)' : 'none',
+              transition: 'all .18s',
+              transform: canSend ? 'scale(1)' : 'scale(0.96)',
+            }}
+            onMouseEnter={(e) => {
+              if (canSend) e.currentTarget.style.transform = 'scale(1.08)';
+            }}
+            onMouseLeave={(e) => {
+              if (canSend) e.currentTarget.style.transform = 'scale(1)';
+            }}
+          >
+            <Icon name="send" color={canSend ? '#ffffff' : '#64748b'} size={17} width={2.2} />
           </button>
         </div>
+
         {busyLabel && (
-          <div style={{ textAlign: 'center', marginTop: 8, fontFamily: C.mono, fontSize: FS.s, color: C.textDim }}>{busyLabel}</div>
+          <div style={{
+            textAlign: 'center',
+            marginTop: 8,
+            fontFamily: C.mono,
+            fontSize: FS.s,
+            color: 'rgba(126,139,160,0.8)',
+          }}>
+            {busyLabel}
+          </div>
         )}
       </div>
     </div>
   );
 }
-
-const circleBtn: React.CSSProperties = {
-  width: 38, height: 38, borderRadius: '50%', border: 'none', flexShrink: 0,
-  background: C.accent, color: C.onAccent, display: 'flex', alignItems: 'center', justifyContent: 'center',
-};
-
-const userBubble: React.CSSProperties = {
-  maxWidth: '78%', background: w(0.085), borderRadius: R.xxl,
-  padding: '11px 17px', fontSize: FS.xl, lineHeight: 1.55, color: C.tableText,
-  whiteSpace: 'pre-wrap', wordBreak: 'break-word',
-};

@@ -7,18 +7,19 @@ import type { AssistantState } from '../hooks/useAssistant.js';
 import type { Device } from '../lib/data.js';
 
 const TYPE_COLOR: Record<string, string> = {
-  camera: C.accent,
-  web: C.cyan,
-  osc: C.purple,
-  artnet: C.green,
-  switch: C.amber,
-  computer: C.blue,
-  printer: C.pink,
+  camera: '#ff6b5b',
+  web: '#38bdf8',
+  osc: '#a882ff',
+  artnet: '#39d98a',
+  switch: '#ffb454',
+  computer: '#60a5fa',
+  printer: '#f472b6',
+  unknown: '#94a3b8',
 };
 
 const TYPE_LABEL: Record<string, string> = {
   camera: 'Камера',
-  web: 'Веб',
+  web: 'Веб-узел',
   osc: 'OSC',
   artnet: 'Art-Net',
   switch: 'Коммутатор',
@@ -29,15 +30,15 @@ const TYPE_LABEL: Record<string, string> = {
 
 type Tab = 'online' | 'all';
 
-const COLS = '140px 1.7fr 100px 90px 1.8fr 90px';
+const COLS = '150px 1.6fr 110px 96px 1.8fr 90px';
 
 const COLS_DEF = [
-  { key: '140px', label: 'IP' },
-  { key: '1.7fr', label: 'Имя' },
-  { key: '100px', label: 'Тип' },
-  { key: '90px', label: 'Статус' },
-  { key: '1.8fr', label: 'Сервисы' },
-  { key: '90px', label: 'Ответ' },
+  { key: '150px', label: 'IP АДРЕС' },
+  { key: '1.6fr', label: 'ИМЯ УЗЛА' },
+  { key: '110px', label: 'ТИП' },
+  { key: '96px', label: 'СТАТУС' },
+  { key: '1.8fr', label: 'СЕРВИСЫ' },
+  { key: '90px', label: 'ОТКЛИК' },
 ];
 
 export default function Devices({ a, ws }: { a: AssistantState; ws?: WebSocket | null }) {
@@ -114,88 +115,284 @@ export default function Devices({ a, ws }: { a: AssistantState; ws?: WebSocket |
 
   return (
     <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', animation: 'ariaFadeFast .22s ease both' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 30px', borderBottom: `1px solid ${C.lineSoft}` }}>
-        <div style={{ display: 'flex', gap: 4 }}>
-          {(['online', 'all'] as Tab[]).map((t) => (
-            <button key={t} onClick={() => setTab(t)} style={{
-              padding: '6px 14px', borderRadius: 6, border: 'none', cursor: 'pointer',
-              fontSize: 11, fontFamily: C.mono, letterSpacing: '.08em',
-              background: tab === t ? acc(0.2) : 'transparent',
-              color: tab === t ? C.accent : C.textDim,
-              borderBottom: tab === t ? `2px solid ${C.accent}` : '2px solid transparent',
-            }}>
-              {{ online: `Онлайн (${onlineCount})`, all: `Все (${a.devices.length})` }[t]}
-            </button>
-          ))}
+      {/* ─── Devices Top Controls Bar ─── */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '12px 28px',
+        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        background: 'rgba(6, 8, 13, 0.55)',
+        backdropFilter: 'blur(16px)',
+      }}>
+        {/* Subtabs Switcher */}
+        <div style={{
+          display: 'flex',
+          gap: 4,
+          background: 'rgba(255,255,255,0.03)',
+          padding: 3,
+          borderRadius: 10,
+          border: '1px solid rgba(255,255,255,0.05)',
+        }}>
+          {(['online', 'all'] as Tab[]).map((t) => {
+            const active = tab === t;
+            return (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                style={{
+                  padding: '5px 14px',
+                  borderRadius: 7,
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: 11,
+                  fontFamily: C.mono,
+                  letterSpacing: '.06em',
+                  fontWeight: active ? 700 : 500,
+                  background: active ? 'rgba(255,107,91,0.18)' : 'transparent',
+                  color: active ? '#ff8a7a' : 'rgba(255,255,255,0.5)',
+                  boxShadow: active ? '0 2px 10px rgba(255,107,91,0.15)' : 'none',
+                  transition: 'all .18s',
+                }}
+              >
+                {{ online: `В сети (${onlineCount})`, all: `Все узлы (${a.devices.length})` }[t]}
+              </button>
+            );
+          })}
         </div>
-        <button onClick={scan} disabled={a.devicesScanning} style={{ ...ui.s.btn, ...(a.devicesScanning ? { opacity: .5, cursor: 'default' } : null) }}>
-          {a.devicesScanning ? 'Сканирование…' : 'Сканировать'}
+
+        {/* Scan Network Trigger Button */}
+        <button
+          onClick={scan}
+          disabled={a.devicesScanning}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '6px 16px',
+            borderRadius: 8,
+            border: '1px solid rgba(255,107,91,0.3)',
+            background: a.devicesScanning ? 'rgba(255,107,91,0.08)' : 'rgba(255,107,91,0.14)',
+            color: '#ff8a7a',
+            cursor: a.devicesScanning ? 'default' : 'pointer',
+            fontFamily: C.mono,
+            fontSize: 11,
+            fontWeight: 600,
+            letterSpacing: '.06em',
+            boxShadow: '0 2px 12px rgba(255,107,91,0.15)',
+            transition: 'all .18s',
+          }}
+          onMouseEnter={(e) => {
+            if (!a.devicesScanning) {
+              e.currentTarget.style.background = 'rgba(255,107,91,0.22)';
+              e.currentTarget.style.boxShadow = '0 0 16px rgba(255,107,91,0.35)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!a.devicesScanning) {
+              e.currentTarget.style.background = 'rgba(255,107,91,0.14)';
+              e.currentTarget.style.boxShadow = '0 2px 12px rgba(255,107,91,0.15)';
+            }
+          }}
+        >
+          {a.devicesScanning && <span style={spinner} />}
+          <span>{a.devicesScanning ? 'Сканирование сети…' : 'Сканировать сеть'}</span>
         </button>
       </div>
 
       {a.devicesScanning && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 30px', borderBottom: `1px solid ${C.lineSoft}`, fontFamily: C.mono, fontSize: 12, color: C.cyan }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          padding: '10px 28px',
+          borderBottom: '1px solid rgba(255,255,255,0.05)',
+          background: 'rgba(56,189,248,0.06)',
+          fontFamily: C.mono,
+          fontSize: 11.5,
+          color: '#38bdf8',
+        }}>
           <span style={spinner} />
-          Сканирование сети…
+          <span>Сканирование локальной подсети и поиск IP узлов…</span>
         </div>
       )}
 
       {analyzing && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 30px', borderBottom: `1px solid ${C.lineSoft}`, fontFamily: C.mono, fontSize: 12, color: C.cyan }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 12,
+          padding: '10px 28px',
+          borderBottom: '1px solid rgba(255,255,255,0.05)',
+          background: 'rgba(56,189,248,0.06)',
+          fontFamily: C.mono,
+          fontSize: 11.5,
+          color: '#38bdf8',
+        }}>
           <span style={spinner} />
-          Распознавание кадра…
+          <span>Распознавание кадра нейросетью ARIA Vision…</span>
         </div>
       )}
 
-      <div style={{ flex: 1, overflow: 'auto', padding: '18px 30px' }}>
+      {/* ─── Device List / Table ─── */}
+      <div style={{ flex: 1, overflow: 'auto', padding: '20px 28px' }}>
         {list.length === 0 && !a.devicesScanning ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '60%', color: C.textDim, fontFamily: C.mono, fontSize: 13, textAlign: 'center', gap: 10 }}>
-            <Icon name="camera" color={C.textFaint} size={40} />
-            <span>{tab === 'online' ? 'Нет онлайн устройств' : 'Нет известных устройств — Сканировать'}</span>
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '60%',
+            color: 'rgba(126,139,160,0.8)',
+            fontFamily: C.mono,
+            fontSize: 13,
+            textAlign: 'center',
+            gap: 14,
+          }}>
+            <div style={{
+              width: 60,
+              height: 60,
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Icon name="camera" color={C.textFaint} size={28} />
+            </div>
+            <div>{tab === 'online' ? 'В сети нет активных устройств' : 'Устройства не обнаружены — запустите сканирование'}</div>
           </div>
         ) : (
-          <TablePanel style={{ minWidth: 880 }}>
+          <TablePanel style={{ minWidth: 920 }}>
             <TableHead cols={COLS_DEF} sortKey="" sortDir={1} onSort={() => {}} />
-            {list.map(d => (
+            {list.map((d) => (
               <TableRow key={d.ip} cols={COLS} onContextMenu={(e) => onRowContext(e, d)}>
-                <Td mono color={C.cyan}>{d.ip}</Td>
-                <Td style={{ whiteSpace: 'normal' }}>
-                  <span style={{ color: C.textHi }}>{d.name || '—'}</span>
-                  {d.vendor && (
-                    <span style={{ display: 'block', fontFamily: C.mono, fontSize: 10, color: C.textDim }}>{d.vendor}</span>
-                  )}
+                {/* IP Address */}
+                <Td mono color={C.cyan} style={{ fontWeight: 600 }}>
+                  {d.ip}
                 </Td>
-                <Td mono color={TYPE_COLOR[d.type] || '#8a97ab'}>{TYPE_LABEL[d.type] || d.type}</Td>
-                <Td mono color={d.online ? C.green : C.textFaint} style={{ letterSpacing: '.1em' }}>
-                  {d.online ? '●' : '○'}
-                </Td>
+
+                {/* Node Name & Vendor */}
                 <Td style={{ whiteSpace: 'normal' }}>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
-                    {d.services.map(s => (
-                      <span key={s} style={{ padding: '1px 7px', borderRadius: 6, background: 'rgba(255,255,255,.06)', color: C.textMid, fontFamily: C.mono, fontSize: 10 }}>{s}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ color: '#f1f5f9', fontWeight: 600, fontSize: 13 }}>{d.name || '—'}</span>
+                    {d.vendor && (
+                      <span style={{
+                        fontFamily: C.mono,
+                        fontSize: 9.5,
+                        color: 'rgba(255,255,255,0.4)',
+                        padding: '1px 6px',
+                        borderRadius: 4,
+                        background: 'rgba(255,255,255,0.04)',
+                        border: '1px solid rgba(255,255,255,0.06)',
+                      }}>
+                        {d.vendor}
+                      </span>
+                    )}
+                  </div>
+                </Td>
+
+                {/* Type Pill */}
+                <Td>
+                  <span style={{
+                    padding: '2px 8px',
+                    borderRadius: 6,
+                    fontSize: 10,
+                    fontWeight: 700,
+                    fontFamily: C.mono,
+                    color: TYPE_COLOR[d.type] || '#94a3b8',
+                    background: `${TYPE_COLOR[d.type] || '#94a3b8'}1a`,
+                    border: `1px solid ${TYPE_COLOR[d.type] || '#94a3b8'}33`,
+                  }}>
+                    {TYPE_LABEL[d.type] || d.type}
+                  </span>
+                </Td>
+
+                {/* Status Indicator */}
+                <Td>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+                    <span style={{
+                      width: 7,
+                      height: 7,
+                      borderRadius: '50%',
+                      background: d.online ? '#39d98a' : '#64748b',
+                      boxShadow: d.online ? '0 0 10px #39d98a' : 'none',
+                    }} />
+                    <span style={{
+                      fontFamily: C.mono,
+                      fontSize: 10,
+                      fontWeight: 600,
+                      color: d.online ? '#39d98a' : '#64748b',
+                      letterSpacing: '.06em',
+                    }}>
+                      {d.online ? 'ONLINE' : 'OFFLINE'}
+                    </span>
+                  </div>
+                </Td>
+
+                {/* Services Chips */}
+                <Td style={{ whiteSpace: 'normal' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 5 }}>
+                    {d.services.map((s) => (
+                      <span
+                        key={s}
+                        style={{
+                          padding: '2px 8px',
+                          borderRadius: 6,
+                          background: 'rgba(255,255,255,0.04)',
+                          border: '1px solid rgba(255,255,255,0.07)',
+                          color: '#cbd5e1',
+                          fontFamily: C.mono,
+                          fontSize: 10,
+                        }}
+                      >
+                        {s}
+                      </span>
                     ))}
                   </div>
                 </Td>
-                <Td mono color={d.responseMs > 150 ? C.amber : C.textMid}>{d.responseMs > 0 ? `${d.responseMs} мс` : '—'}</Td>
+
+                {/* Latency */}
+                <Td mono color={d.responseMs > 150 ? '#ffb454' : d.responseMs > 0 ? '#39d98a' : 'rgba(255,255,255,0.3)'}>
+                  {d.responseMs > 0 ? `${d.responseMs} мс` : '—'}
+                </Td>
               </TableRow>
             ))}
           </TablePanel>
         )}
       </div>
 
+      {/* ─── Context Menu ─── */}
       {menu && (
-        <div style={{ position: 'fixed', left: menu.x, top: menu.y, zIndex: 51, background: '#0d1320', border: `1px solid ${C.line}`, borderRadius: 10, padding: 6, minWidth: 200, boxShadow: '0 12px 40px rgba(0,0,0,.6)' }}>
+        <div style={{
+          position: 'fixed',
+          left: menu.x,
+          top: menu.y,
+          zIndex: 51,
+          background: 'rgba(10, 15, 24, 0.95)',
+          border: '1px solid rgba(255,255,255,0.12)',
+          borderRadius: 12,
+          padding: 6,
+          minWidth: 210,
+          boxShadow: '0 16px 48px rgba(0,0,0,0.7)',
+          backdropFilter: 'blur(20px)',
+        }}>
           {(menu.device.mjpegUrl || menu.device.type === 'camera') && (
-            <MenuItem onClick={() => openCamera(menu.device)}>Открыть камеру</MenuItem>
+            <MenuItem onClick={() => openCamera(menu.device)}>📹 Открыть поток камеры</MenuItem>
           )}
           {menu.device.type === 'camera' && (
             <>
-              <MenuItem onClick={() => { snapReqDevice.current = menu.device; a.sendCameraSnapshot(menu.device.ip); setMenu(null); }}>Снимок</MenuItem>
-              <MenuItem onClick={() => { setAnalyzing(menu.device.ip); a.sendCameraAnalyze(menu.device.ip); setMenu(null); }}>Распознать кадр</MenuItem>
+              <MenuItem onClick={() => { snapReqDevice.current = menu.device; a.sendCameraSnapshot(menu.device.ip); setMenu(null); }}>
+                📷 Сделать снимок
+              </MenuItem>
+              <MenuItem onClick={() => { setAnalyzing(menu.device.ip); a.sendCameraAnalyze(menu.device.ip); setMenu(null); }}>
+                🔍 Распознать кадр (Vision)
+              </MenuItem>
             </>
           )}
-          <MenuItem onClick={() => openWeb(menu.device)}>Открыть веб-интерфейс</MenuItem>
-          <MenuItem onClick={() => startRename(menu.device)}>Задать имя</MenuItem>
+          <MenuItem onClick={() => openWeb(menu.device)}>🌐 Открыть веб-интерфейс</MenuItem>
+          <MenuItem onClick={() => startRename(menu.device)}>✏️ Переименовать узел</MenuItem>
         </div>
       )}
 
@@ -203,57 +400,136 @@ export default function Devices({ a, ws }: { a: AssistantState; ws?: WebSocket |
         <div style={{ position: 'fixed', inset: 0, zIndex: 50 }} onClick={() => setMenu(null)} onContextMenu={(e) => { e.preventDefault(); setMenu(null); }} />
       )}
 
+      {/* ─── Rename Modal ─── */}
       {renaming && (
         <>
-          <div style={{ position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(0,0,0,.5)' }} onClick={() => setRenaming(null)} />
-          <div style={{ position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 61, width: 340, background: '#0d1320', border: `1px solid ${C.accentLine}`, borderRadius: 14, padding: 20, boxShadow: '0 20px 60px rgba(0,0,0,.7)', fontFamily: C.ui }}>
-            <div style={{ fontFamily: C.mono, fontSize: 11, letterSpacing: '.14em', color: C.textDim, textTransform: 'uppercase', marginBottom: 6 }}>{renaming.ip}</div>
-            <div style={{ fontSize: 16, fontWeight: 600, color: C.textHi, marginBottom: 14 }}>Задать имя</div>
+          <div style={{ position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)' }} onClick={() => setRenaming(null)} />
+          <div style={{
+            position: 'fixed',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 61,
+            width: 360,
+            background: 'rgba(10, 15, 24, 0.95)',
+            border: '1px solid rgba(255,107,91,0.3)',
+            borderRadius: 18,
+            padding: 24,
+            boxShadow: '0 24px 60px rgba(0,0,0,0.8)',
+            backdropFilter: 'blur(24px)',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}>
+            <div style={{ fontFamily: C.mono, fontSize: 11, letterSpacing: '.14em', color: C.cyan, marginBottom: 8 }}>
+              {renaming.ip}
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 16 }}>
+              Задать имя узла
+            </div>
             <input
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') saveName(); if (e.key === 'Escape') setRenaming(null); }}
-              placeholder="Имя устройства…"
-              style={{ width: '100%', ...ui.s.input }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') saveName();
+                if (e.key === 'Escape') setRenaming(null);
+              }}
+              placeholder="Например: PTZ Camera 01…"
+              style={{
+                width: '100%',
+                padding: '10px 14px',
+                borderRadius: 8,
+                border: '1px solid rgba(255,255,255,0.1)',
+                background: 'rgba(255,255,255,0.04)',
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
+                fontSize: 13,
+                color: '#fff',
+                outline: 'none',
+              }}
               autoFocus
             />
-            <div style={{ display: 'flex', gap: 8, marginTop: 16, justifyContent: 'flex-end' }}>
-              <button onClick={() => setRenaming(null)} style={ui.s.btn}>Отмена</button>
-              <button onClick={saveName} style={ui.s.btnActive}>Сохранить</button>
+            <div style={{ display: 'flex', gap: 10, marginTop: 20, justifyContent: 'flex-end' }}>
+              <button onClick={() => setRenaming(null)} style={{ ...ui.s.btn, borderRadius: 8 }}>Отмена</button>
+              <button onClick={saveName} style={{ ...ui.s.btnActive, borderRadius: 8 }}>Сохранить</button>
             </div>
           </div>
         </>
       )}
 
+      {/* ─── Snapshot Modal ─── */}
       {snapshot && (
         <>
-          <div style={{ position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(0,0,0,.55)' }} onClick={() => setSnapshot(null)} />
-          <div style={{ position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 61, maxWidth: '94vw', maxHeight: '92vh', background: '#0d1320', border: `1px solid ${C.accentLine}`, borderRadius: 14, padding: 16, boxShadow: '0 20px 60px rgba(0,0,0,.7)', display: 'flex', flexDirection: 'column', fontFamily: C.ui }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 12 }}>
-              <span style={{ fontFamily: C.mono, fontSize: 11, letterSpacing: '.14em', color: C.textDim, textTransform: 'uppercase' }}>СНИМОК · {snapshot.device.name || snapshot.device.ip}</span>
-              <button onClick={() => setSnapshot(null)} style={ui.s.btn}>Закрыть</button>
+          <div style={{ position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)' }} onClick={() => setSnapshot(null)} />
+          <div style={{
+            position: 'fixed',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 61,
+            maxWidth: '92vw',
+            maxHeight: '90vh',
+            background: 'rgba(10, 15, 24, 0.95)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: 18,
+            padding: 20,
+            boxShadow: '0 24px 60px rgba(0,0,0,0.8)',
+            display: 'flex',
+            flexDirection: 'column',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 14, marginBottom: 14 }}>
+              <span style={{ fontFamily: C.mono, fontSize: 11, letterSpacing: '.14em', color: '#38bdf8', fontWeight: 600 }}>
+                КАДР КАМЕРЫ · {snapshot.device.name || snapshot.device.ip}
+              </span>
+              <button onClick={() => setSnapshot(null)} style={{ ...ui.s.btn, borderRadius: 6 }}>Закрыть</button>
             </div>
             {snapshot.data ? (
-              <img src={'data:image/jpeg;base64,' + snapshot.data} alt="" style={{ maxWidth: '90vw', maxHeight: '80vh', objectFit: 'contain', borderRadius: 10 }} />
+              <img src={'data:image/jpeg;base64,' + snapshot.data} alt="" style={{ maxWidth: '88vw', maxHeight: '76vh', objectFit: 'contain', borderRadius: 12, border: '1px solid rgba(255,255,255,0.1)' }} />
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14, padding: 40, fontFamily: C.mono, fontSize: 12, color: C.textDim }}>
-                <div>{snapshot.message || 'Не удалось получить снимок.'}</div>
-                <button onClick={() => retryWithCreds(snapshot.device)} style={ui.s.btnActive}>Указать логин/пароль</button>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 16, padding: '40px 20px', fontFamily: C.mono, fontSize: 12, color: C.textDim }}>
+                <div>{snapshot.message || 'Не удалось получить снимок с камеры.'}</div>
+                <button onClick={() => retryWithCreds(snapshot.device)} style={{ ...ui.s.btnActive, borderRadius: 8 }}>
+                  Указать логин / пароль
+                </button>
               </div>
             )}
           </div>
         </>
       )}
 
+      {/* ─── Vision Analyze Modal ─── */}
       {analyzeResult !== null && (
         <>
-          <div style={{ position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(0,0,0,.5)' }} onClick={() => setAnalyzeResult(null)} />
-          <div style={{ position: 'fixed', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 61, width: 480, maxWidth: '92vw', maxHeight: '80vh', overflowY: 'auto', background: '#0d1320', border: `1px solid ${C.accentLine}`, borderRadius: 14, padding: 20, boxShadow: '0 20px 60px rgba(0,0,0,.7)', fontFamily: C.ui }}>
-            <div style={{ fontFamily: C.mono, fontSize: 11, letterSpacing: '.14em', color: C.textDim, textTransform: 'uppercase', marginBottom: 6 }}>распознавание кадра</div>
-            <div style={{ fontSize: 16, fontWeight: 600, color: C.textHi, marginBottom: 14 }}>Результат распознавания</div>
-            <div style={{ fontFamily: C.mono, fontSize: 12, color: C.tableText, lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>{analyzeResult}</div>
-            <div style={{ display: 'flex', gap: 8, marginTop: 16, justifyContent: 'flex-end' }}>
-              <button onClick={() => setAnalyzeResult(null)} style={ui.s.btn}>Закрыть</button>
+          <div style={{ position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(6px)' }} onClick={() => setAnalyzeResult(null)} />
+          <div style={{
+            position: 'fixed',
+            left: '50%',
+            top: '50%',
+            transform: 'translate(-50%, -50%)',
+            zIndex: 61,
+            width: 500,
+            maxWidth: '92vw',
+            maxHeight: '80vh',
+            overflowY: 'auto',
+            background: 'rgba(10, 15, 24, 0.95)',
+            border: '1px solid rgba(56,189,248,0.3)',
+            borderRadius: 18,
+            padding: 24,
+            boxShadow: '0 24px 60px rgba(0,0,0,0.8)',
+            backdropFilter: 'blur(24px)',
+            fontFamily: "'Plus Jakarta Sans', sans-serif",
+          }}>
+            <div style={{ fontFamily: C.mono, fontSize: 11, letterSpacing: '.14em', color: '#38bdf8', marginBottom: 8, fontWeight: 700 }}>
+              ARIA VISION · АНАЛИЗ КАДРА
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 700, color: '#f8fafc', marginBottom: 14 }}>
+              Результат распознавания
+            </div>
+            <div style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: 13.5, color: '#cbd5e1', lineHeight: 1.7, whiteSpace: 'pre-wrap' }}>
+              {analyzeResult}
+            </div>
+            <div style={{ display: 'flex', gap: 10, marginTop: 20, justifyContent: 'flex-end' }}>
+              <button onClick={() => setAnalyzeResult(null)} style={{ ...ui.s.btnActive, borderRadius: 8 }}>
+                Закрыть
+              </button>
             </div>
           </div>
         </>
@@ -266,9 +542,28 @@ function MenuItem({ onClick, children }: { onClick: () => void; children: React.
   return (
     <button
       onClick={onClick}
-      onMouseEnter={(e) => { e.currentTarget.style.background = acc(0.12); e.currentTarget.style.color = C.textHi; }}
-      onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = C.textMid; }}
-      style={{ display: 'block', width: '100%', textAlign: 'left', padding: '8px 12px', border: 'none', background: 'transparent', color: C.textMid, fontFamily: C.ui, fontSize: 13, cursor: 'pointer', borderRadius: 6 }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = 'rgba(255,107,91,0.15)';
+        e.currentTarget.style.color = '#fff';
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = 'transparent';
+        e.currentTarget.style.color = '#cbd5e1';
+      }}
+      style={{
+        display: 'block',
+        width: '100%',
+        textAlign: 'left',
+        padding: '9px 12px',
+        border: 'none',
+        background: 'transparent',
+        color: '#cbd5e1',
+        fontFamily: "'Plus Jakarta Sans', sans-serif",
+        fontSize: 12.5,
+        cursor: 'pointer',
+        borderRadius: 8,
+        transition: 'all .15s',
+      }}
     >
       {children}
     </button>
@@ -276,6 +571,11 @@ function MenuItem({ onClick, children }: { onClick: () => void; children: React.
 }
 
 const spinner: React.CSSProperties = {
-  width: 14, height: 14, borderRadius: '50%', border: `2px solid ${C.line}`,
-  borderTopColor: C.cyan, animation: 'ariaSpin .7s linear infinite', display: 'inline-block',
+  width: 14,
+  height: 14,
+  borderRadius: '50%',
+  border: '2px solid rgba(255,255,255,0.1)',
+  borderTopColor: '#38bdf8',
+  animation: 'ariaSpin .7s linear infinite',
+  display: 'inline-block',
 };
